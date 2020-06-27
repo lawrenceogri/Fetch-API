@@ -5,7 +5,7 @@ const form = document.querySelector('form');
 // FETCH FUNCTIONS
 function fetchData(url){
     return fetch(url)
-    .then(res => console.log(res))
+        .then(checkStatus)
         .then(res => res.json())
         .catch(error => console.log("There was an error", error))
 
@@ -18,6 +18,15 @@ fetchData('https://dog.ceo/api/breeds/image/random')
     .then(data => generateImage(data.message))
 
 // HELPER FUNCTION
+
+function checkStatus(response){
+    if(response.ok){
+        return Promise.resolve(response);
+    } else{
+        return Promise.reject(new Error(response.statusText))
+    }
+}
+
 function generateOptions(data){
     const options = data.map(item => `
         <option value='${item}'>${item}</option>
